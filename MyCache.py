@@ -38,16 +38,14 @@ class MyCache(object):
 
             sched.add_interval_job(__size_check, seconds=self._size_check_interval)
 
-    def add_entry(self, name, refresher=None, expire=-1, retrieve=True):
+    def add_entry(self, name, refresher=None, expire=-1):
         with self.__lock:
             if name in self.__cache_mgmt:
                 print 'Impl_Cache {0} is already exist, cannot be add again...'.format(name)
             else:
                 unit = CacheUnit(name, refresher, expire)
                 self.__cache_mgmt[name] = unit
-
-        if retrieve:
-            self.retrieve(name)
+        self.retrieve(name)
 
     def retrieve(self, name):
         with self.__lock:
